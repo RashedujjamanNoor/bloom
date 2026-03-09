@@ -1,5 +1,10 @@
 import React from "react";
+import { HeroImageSlider } from "../components/HeroImageSlider";
 
 export const Home = () => {
-  return <div>this is home page</div>;
+  return (
+    <div>
+      <HeroImageSlider />
+    </div>
+  );
 };
