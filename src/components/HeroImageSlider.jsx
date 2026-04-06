@@ -9,6 +9,8 @@ import hero3 from "../assets/hero3.webp";
 import hero4 from "../assets/hero4.webp";
 import hero5 from "../assets/hero5.webp";
 import hero6 from "../assets/hero6.webp";
+import hero7 from "../assets/hero7.webp";
+import hero8 from "../assets/hero8.webp";
 
 export const HeroImageSlider = () => {
   return (
@@ -41,6 +43,12 @@ export const HeroImageSlider = () => {
         </SwiperSlide>
         <SwiperSlide>
           <img src={hero6} alt="" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <img src={hero7} alt="" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <img src={hero8} alt="" />
         </SwiperSlide>
       </Swiper>
     </div>
