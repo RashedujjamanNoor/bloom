@@ -28,6 +28,23 @@ export const PopulerCategory = () => {
           }}
           modules={[FreeMode]}
           className="mySwiper"
+          breakpoints={{
+            320: {
+              slidesPerView: 1.2, // small phones
+            },
+            480: {
+              slidesPerView: 2, // bigger phones
+            },
+            768: {
+              slidesPerView: 3, // tablets
+            },
+            1024: {
+              slidesPerView: 4, // laptop
+            },
+            1280: {
+              slidesPerView: 5, // desktop
+            },
+          }}
         >
           {CategoryData.map((item) => (
             <SwiperSlide key={item.id}>
