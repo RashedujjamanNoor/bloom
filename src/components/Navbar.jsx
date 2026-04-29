@@ -1,5 +1,7 @@
 import React from "react";
 import logo from "/logo.svg";
+import { Link } from "react-router-dom";
+import { Cart } from "./Cart";
 
 const Navbar = () => {
   return (
@@ -52,7 +54,7 @@ const Navbar = () => {
               <a>New Arival</a>
             </li>
             <li>
-              <a>Men</a>
+              <Link to="/men">Men</Link>
             </li>
             <li>
               <a>Women</a>
@@ -64,7 +66,7 @@ const Navbar = () => {
         </div>
         <div className="navbar-end">
           <div>
-            <p>Login/Register</p>
+            <Cart />
           </div>
           <div className="dropdown dropdown-end">
             <div

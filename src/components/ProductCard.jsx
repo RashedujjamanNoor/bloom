@@ -23,7 +23,7 @@ export const ProductCard = ({ image, hoverImage, title, price }) => {
 
       {/* Add to Cart Button */}
       <div className="flex justify-end mt-2 mr-2">
-        <button className="bg-black text-white text-xs px-3 py-1 rounded-md hover:bg-gray-800 flex items-center justify-center gap-1">
+        <button className="bg-black text-white text-xs px-3 py-1 rounded-md hover:bg-gray-800 flex items-center justify-center gap-1 cursor-pointer">
           <LuShoppingCart className="text-md " />
           Add to Cart
         </button>
@@ -32,7 +32,7 @@ export const ProductCard = ({ image, hoverImage, title, price }) => {
       {/* Title + Price */}
       <div className="mt-1 text-left mx-2">
         <h3 className="text-sm font-medium">{title}</h3>
-        <p className="text-xs text-gray-800">৳{price}</p>
+        <p className="text-xs">৳{price}</p>
       </div>
     </div>
   );
