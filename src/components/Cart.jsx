@@ -2,19 +2,23 @@ import React from "react";
 import { BsCart4 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { MdDeleteForever } from "react-icons/md";
-import { add } from "../feature/cartSlice";
+import { add, deleteOne, remove } from "../feature/cartSlice";
 
 export const Cart = () => {
   const cartData = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   console.log(cartData);
 
-  const handleRemove = (item) => {
-    dispatch();
+  const handleDeleteOne = (item) => {
+    dispatch(deleteOne(item));
   };
 
   const handleAdd = (item) => {
     dispatch(add(item));
+  };
+
+  const handleRemove = (item) => {
+    dispatch(remove(item));
   };
 
   return (
@@ -41,19 +45,21 @@ export const Cart = () => {
           <p>Shopping Cart</p>
           <hr className="my-4" />
           <div>
-            {cartData.cartItem.map((item, index) => (
+            {cartData.cartItem.map((item) => (
               <div
                 key={item.id}
-                className="flex justify-between items-center w-full p-2"
+                className="flex justify-between items-center gap-2 w-full p-2"
               >
-                <div className="flex items-center gap-2">
-                  <p>{index + 1}.</p>
-                  <div className="text-left">
+                <div className="flex items-center gap-2 w-full order-2">
+                  <div className="text-left w-full">
                     <p>{item.title}</p>
                     <p className="text-xs">Price: {item.price}</p>
-                    <div className="mt-2">
-                      <MdDeleteForever className="text-xl text-red-400" />
-                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <MdDeleteForever
+                      className="text-2xl text-red-400"
+                      onClick={() => handleRemove(item)}
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col justify-center items-center">
@@ -63,7 +69,7 @@ export const Cart = () => {
                     className="w-16 h-16 object-top object-cover rounded-xl"
                   />
                   <div className="bg-gray-700 flex justify-center items-center gap-4 text-[#8cc63f] px-2 rounded-full mt-2">
-                    <button onClick={() => handleRemove(item)}>-</button>
+                    <button onClick={() => handleDeleteOne(item)}>-</button>
                     {item.quantity}
                     <button onClick={() => handleAdd(item)}>+</button>
                   </div>
