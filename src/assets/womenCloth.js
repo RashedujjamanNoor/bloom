@@ -14,42 +14,49 @@ import d7 from "../assets/women/d7.jpg";
 import dh7 from "../assets/women/d7.1.jpg";
 const womentData = [
   {
+    id: "w1",
     title: "Dress",
     price: 22,
     img: d1,
     img2: dh1,
   },
   {
+    id: "w2",
     title: "Dress",
     price: 22,
     img: d2,
     img2: dh2,
   },
   {
+    id: "w3",
     title: "Dress",
     price: 22,
     img: d3,
     img2: dh3,
   },
   {
+    id: "w4",
     title: "Dress",
     price: 22,
     img: d4,
     img2: dh4,
   },
   {
+    id: "w5",
     title: "Dress",
     price: 22,
     img: d5,
     img2: dh5,
   },
   {
+    id: "w6",
     title: "Dress",
     price: 22,
     img: d6,
     img2: dh6,
   },
   {
+    id: "w7",
     title: "Dress",
     price: 22,
     img: d7,

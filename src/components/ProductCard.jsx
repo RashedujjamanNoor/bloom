@@ -1,7 +1,15 @@
 import React from "react";
 import { LuShoppingCart } from "react-icons/lu";
+import { useDispatch } from "react-redux";
+import { add } from "../feature/cartSlice";
 
-export const ProductCard = ({ image, hoverImage, title, price }) => {
+export const ProductCard = ({ image, hoverImage, title, price, item }) => {
+  const dispatch = useDispatch();
+
+  const handleAddcart = (item) => {
+    dispatch(add(item));
+  };
+
   return (
     <div className=" rounded-xl shadow-sm hover:shadow-md transition duration-300">
       {/* Image Wrapper */}
@@ -22,7 +30,10 @@ export const ProductCard = ({ image, hoverImage, title, price }) => {
       </div>
 
       {/* Add to Cart Button */}
-      <div className="flex justify-end mt-2 mr-2">
+      <div
+        onClick={() => handleAddcart(item)}
+        className="flex justify-end mt-2 mr-2"
+      >
         <button className="bg-black text-white text-xs px-3 py-1 rounded-md hover:bg-gray-800 flex items-center justify-center gap-1 cursor-pointer">
           <LuShoppingCart className="text-md " />
           Add to Cart

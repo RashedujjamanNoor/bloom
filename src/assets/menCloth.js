@@ -15,42 +15,49 @@ import mh7 from "../assets/men/mh7.jpg";
 
 const menData = [
   {
+    id: "m1",
     title: "Shirt",
     price: 22,
     img: m1,
     img2: mh1,
   },
   {
+    id: "m2",
     title: "Shirt",
     price: 22,
     img: m2,
     img2: mh2,
   },
   {
+    id: "m3",
     title: "Shirt",
     price: 22,
     img: m3,
     img2: mh3,
   },
   {
+    id: "m4",
     title: "Shirt",
     price: 22,
     img: m4,
     img2: mh4,
   },
   {
+    id: "m5",
     title: "Shirt",
     price: 22,
     img: m5,
     img2: mh5,
   },
   {
+    id: "m6",
     title: "Shirt",
     price: 22,
     img: m6,
     img2: mh6,
   },
   {
+    id: "m7",
     title: "Shirt",
     price: 22,
     img: m7,

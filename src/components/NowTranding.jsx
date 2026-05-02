@@ -58,6 +58,7 @@ export const NowTranding = () => {
                   price={item.price}
                   image={item.img}
                   hoverImage={item.img2}
+                  item={item}
                 />
               </SwiperSlide>
             ))}
