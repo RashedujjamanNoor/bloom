@@ -6,9 +6,9 @@ const cartItem =
     ? JSON.parse(localStorage.getItem("cartItem"))
     : [];
 
-const totalQuantity = JSON.parse(localStorage.getItem("totalQuantity"));
-const totalAmount = JSON.parse(localStorage.getItem("totalAmount"));
-const totalItem = JSON.parse(localStorage.getItem("totalItem"));
+const totalQuantity = JSON.parse(localStorage.getItem("totalQuantity")) || 0;
+const totalAmount = JSON.parse(localStorage.getItem("totalAmount")) || 0;
+const totalItem = JSON.parse(localStorage.getItem("totalItem")) || 0;
 
 const initialState = {
   cartItem,

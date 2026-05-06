@@ -3,6 +3,7 @@ import { BsCart4 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { MdDeleteForever } from "react-icons/md";
 import { add, deleteOne, remove } from "../feature/cartSlice";
+import { Link } from "react-router-dom";
 
 export const Cart = () => {
   const cartData = useSelector((state) => state.cart);
@@ -28,7 +29,7 @@ export const Cart = () => {
         {/* Page content here */}
         <label htmlFor="my-drawer-5" className="drawer-button ">
           <BsCart4 className="text-xl cursor-pointer" />
-          <p className="absolute bottom-3 bg-black py-0.5 px-1 rounded-full text-xs left-4 font-bold">
+          <p className="absolute bottom-3  py-0.5 px-1 rounded-full text-xs left-4 font-bold">
             {cartData.totalItem}
           </p>
         </label>
@@ -57,7 +58,7 @@ export const Cart = () => {
                   </div>
                   <div className="mt-2">
                     <MdDeleteForever
-                      className="text-2xl text-red-400"
+                      className="text-2xl text-red-400 cursor-pointer hover:text-red-300"
                       onClick={() => handleRemove(item)}
                     />
                   </div>
@@ -69,15 +70,36 @@ export const Cart = () => {
                     className="w-16 h-16 object-top object-cover rounded-xl"
                   />
                   <div className="bg-gray-700 flex justify-center items-center gap-4 text-[#8cc63f] px-2 rounded-full mt-2">
-                    <button onClick={() => handleDeleteOne(item)}>-</button>
+                    <button
+                      onClick={() => handleDeleteOne(item)}
+                      className="hover:text-green-100 cursor-pointer"
+                    >
+                      -
+                    </button>
                     {item.quantity}
-                    <button onClick={() => handleAdd(item)}>+</button>
+                    <button
+                      onClick={() => handleAdd(item)}
+                      className="hover:text-green-100 cursor-pointer"
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+          <hr className="text-[#8cc63f] my-2" />
+          <p className="text-left font-extralight">
+            Total Price: {cartData.totalAmount}
+          </p>
+          <Link
+            to="/checkout"
+            className="mt-4 bg-[#8cc63f] py-3 rounded-2xl font-semibold cursor-pointer"
+          >
+            Checkout
+          </Link>
         </ul>
+        <div></div>
       </div>
     </div>
   );
