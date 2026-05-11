@@ -88,13 +88,13 @@ export const Cart = () => {
               </div>
             ))}
           </div>
-          <hr className="text-[#8cc63f] my-2" />
+          <hr className="text-primary my-2" />
           <p className="text-left font-extralight">
             Total Price: {cartData.totalAmount}
           </p>
           <Link
             to="/checkout"
-            className="mt-4 bg-[#8cc63f] py-3 rounded-2xl font-semibold cursor-pointer"
+            className="mt-4 bg-primary hover:bg-secondary duration-200 py-3 rounded-2xl font-semibold cursor-pointer active:scale-95"
           >
             Checkout
           </Link>

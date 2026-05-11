@@ -3,6 +3,7 @@ import { HomeLayout } from "../layouts/HomeLayout";
 import { SingleCategory } from "../pages/SingleCategory";
 import { Home } from "../pages/Home";
 import { Checkout } from "../pages/Checkout";
+import AuthPage from "../pages/AuthPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/checkout",
         element: <Checkout />,
+      },
+      {
+        path: "/auth",
+        element: <AuthPage />,
       },
     ],
   },
