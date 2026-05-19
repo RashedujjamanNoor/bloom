@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { add, deleteOne, remove } from "../feature/cartSlice";
+import { add, deleteOne, remove } from "../features/cartSlice";
 import { MdDeleteForever } from "react-icons/md";
 
 export const Checkout = () => {

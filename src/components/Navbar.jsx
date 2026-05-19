@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Cart } from "./Cart";
 
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrentUser, logout } from "../features/authSlice";
+
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  console.log(isAuthenticated);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(logout());
+    navigate("/auth");
+  };
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
+
   return (
     <div>
       <div className="navbar bg-base-100 shadow-sm">
@@ -92,10 +110,21 @@ const Navbar = () => {
                 </a>
               </li>
               <li>
+                {user?.role == "admin" ? (
+                  <Link to="/dashboard">Dashboard</Link>
+                ) : (
+                  ""
+                )}
+              </li>
+              <li>
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                {isAuthenticated ? (
+                  <a onClick={handleLogout}>Logout</a>
+                ) : (
+                  <Link to="/auth">Login</Link>
+                )}
               </li>
             </ul>
           </div>

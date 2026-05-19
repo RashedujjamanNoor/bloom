@@ -2,7 +2,7 @@ import React from "react";
 import { BsCart4 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { MdDeleteForever } from "react-icons/md";
-import { add, deleteOne, remove } from "../feature/cartSlice";
+import { add, deleteOne, remove } from "../features/cartSlice";
 import { Link } from "react-router-dom";
 
 export const Cart = () => {

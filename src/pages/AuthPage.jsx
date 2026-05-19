@@ -1,5 +1,13 @@
 import React, { useState } from "react";
 
+import { loginUser, registerUser } from "../services/authService";
+
+import { useNavigate } from "react-router-dom";
+
+import { useDispatch } from "react-redux";
+
+import { getCurrentUser } from "../features/authSlice";
+
 const ValidationItem = ({ valid, text }) => (
   <p
     className={`flex items-center gap-2 text-sm ${
@@ -7,6 +15,7 @@ const ValidationItem = ({ valid, text }) => (
     }`}
   >
     <span>{valid ? "✅" : "⭕"}</span>
+
     {text}
   </p>
 );
@@ -16,22 +25,29 @@ const AuthPage = () => {
 
   const [darkMode, setDarkMode] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
+
     email: "",
+
     password: "",
   });
 
-  // Detect system theme
+  const navigate = useNavigate();
 
-  // Handle input
+  const dispatch = useDispatch();
+
+  // HANDLE INPUT
   const handleChange = ({ target }) =>
     setFormData({
       ...formData,
+
       [target.name]: target.value,
     });
 
-  // Validations
+  // VALIDATIONS
   const validations = {
     name: formData.name.length >= 4 && formData.name.length <= 20,
 
@@ -48,7 +64,7 @@ const AuthPage = () => {
     special: /[!@#$%^&*(),.?":{}|<>]/.test(formData.password),
   };
 
-  // Final validation
+  // FINAL VALIDATION
   const isValid =
     validations.email &&
     validations.length &&
@@ -58,33 +74,76 @@ const AuthPage = () => {
     validations.special &&
     (isLogin || validations.name);
 
-  // Submit
-  const handleSubmit = (e) => {
+  // SUBMIT
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!isValid) return;
 
-    alert(`${isLogin ? "Login" : "Registration"} Successful`);
+    setLoading(true);
 
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-    });
+    try {
+      let data;
+
+      // LOGIN
+      if (isLogin) {
+        data = await loginUser({
+          email: formData.email,
+
+          password: formData.password,
+        });
+      }
+
+      // REGISTER
+      else {
+        data = await registerUser({
+          name: formData.name,
+
+          email: formData.email,
+
+          password: formData.password,
+        });
+      }
+
+      // STORE TOKEN
+      localStorage.setItem("token", data.token);
+
+      // UPDATE REDUX AUTH STATE
+      await dispatch(getCurrentUser());
+
+      alert(`${isLogin ? "Login" : "Register"} Successful`);
+
+      // RESET FORM
+      setFormData({
+        name: "",
+
+        email: "",
+
+        password: "",
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+
+      alert(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className={darkMode ? "dark" : ""}>
       <div className="min-h-screen flex justify-center items-center px-4 bg-gray-100 dark:bg-gray-900 transition duration-300">
         <div className="w-full max-w-md p-8 rounded-2xl shadow-2xl bg-white dark:bg-gray-800 transition duration-300">
-          {/* Title */}
+          {/* TITLE */}
           <h1 className="text-3xl font-bold text-center mb-6 text-primary dark:text-white">
             {isLogin ? "Login" : "Register"}
           </h1>
 
-          {/* Form */}
+          {/* FORM */}
           <form onSubmit={handleSubmit} className="space-y-4 text-sm">
-            {/* Name */}
+            {/* NAME */}
             {!isLogin && (
               <div className="text-left">
                 <label className="font-medium text-gray-700 dark:text-gray-200">
@@ -107,7 +166,7 @@ const AuthPage = () => {
               </div>
             )}
 
-            {/* Email */}
+            {/* EMAIL */}
             <div className="text-left">
               <label className="font-medium text-gray-700 dark:text-gray-200">
                 Email
@@ -122,7 +181,6 @@ const AuthPage = () => {
                 className="w-full mt-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg p-3 outline-none focus:ring-1 focus:ring-primary"
               />
 
-              {/* Show email validation only in Register page */}
               {!isLogin && (
                 <ValidationItem
                   valid={validations.email}
@@ -131,7 +189,7 @@ const AuthPage = () => {
               )}
             </div>
 
-            {/* Password */}
+            {/* PASSWORD */}
             <div className="text-left">
               <label className="font-medium text-gray-700 dark:text-gray-200">
                 Password
@@ -146,7 +204,6 @@ const AuthPage = () => {
                 className="w-full mt-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 dark:text-white rounded-lg p-3 outline-none focus:ring-1 focus:ring-primary"
               />
 
-              {/* Show validations only in Register page */}
               {!isLogin && (
                 <div className="mt-3 space-y-1">
                   <ValidationItem
@@ -177,21 +234,23 @@ const AuthPage = () => {
               )}
             </div>
 
-            {/* Submit */}
+            {/* BUTTON */}
             <button
               type="submit"
-              disabled={!isValid}
-              className={`w-full py-3 rounded-lg text-white font-semibold transition duration-300 cursor-pointer ${
+              disabled={!isValid || loading}
+              className={`w-full py-3 rounded-lg text-white font-semibold transition duration-300 cursor-pointer
+              
+              ${
                 isValid
                   ? "bg-primary hover:bg-secondary"
                   : "bg-gray-400 cursor-not-allowed"
               }`}
             >
-              {isLogin ? "Login" : "Register"}
+              {loading ? "Loading..." : isLogin ? "Login" : "Register"}
             </button>
           </form>
 
-          {/* Toggle */}
+          {/* TOGGLE */}
           <p className="text-center mt-5 text-gray-700 dark:text-gray-300 text-xs">
             {isLogin ? "Don't have an account?" : "Already have an account?"}
 
