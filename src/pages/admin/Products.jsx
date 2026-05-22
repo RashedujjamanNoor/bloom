@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { uploadImage } from "../../utils/uploadImage.js";
 
 import {
   fetchProducts,
@@ -124,30 +125,37 @@ export const Products = () => {
     e.preventDefault();
 
     try {
-      const productData = new FormData();
+      // UPLOAD IMAGES TO CLOUDINARY
+      const imageUrls = [];
 
-      productData.append("title", formData.title);
-      productData.append("brand", formData.brand);
-      productData.append("category", formData.category);
-      productData.append("price", formData.price);
-      productData.append("stock", formData.stock);
-      productData.append("description", formData.description);
+      for (const image of formData.images) {
+        const url = await uploadImage(image);
 
-      formData.sizes.forEach((size) => {
-        productData.append("sizes", size);
-      });
+        imageUrls.push(url);
+      }
 
-      formData.colors
-        .split(",")
-        .map((color) => color.trim().toUpperCase())
-        .forEach((color) => {
-          productData.append("colors", color);
-        });
+      // IF EDITING AND NO NEW IMAGE SELECTED
+      const finalImages = imageUrls.length > 0 ? imageUrls : previewImages;
 
-      formData.images.forEach((image) => {
-        productData.append("images", image);
-      });
+      // PRODUCT DATA
+      const productData = {
+        title: formData.title,
+        brand: formData.brand,
+        category: formData.category,
+        price: formData.price,
+        stock: formData.stock,
+        description: formData.description,
 
+        sizes: formData.sizes,
+
+        colors: formData.colors
+          .split(",")
+          .map((color) => color.trim().toUpperCase()),
+
+        images: finalImages,
+      };
+
+      // UPDATE
       if (editId) {
         await dispatch(
           updateProduct({
@@ -157,7 +165,10 @@ export const Products = () => {
         ).unwrap();
 
         toast.success("Product Updated Successfully");
-      } else {
+      }
+
+      // ADD
+      else {
         await dispatch(addProduct(productData)).unwrap();
 
         toast.success("Product Added Successfully");
@@ -167,7 +178,7 @@ export const Products = () => {
 
       resetForm();
     } catch (err) {
-      toast.error(err);
+      toast.error(err.message || "Something went wrong");
     }
   };
 
