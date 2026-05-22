@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { getCurrentUser, loginWithGoogle } from "../features/authSlice";
+import { toast } from "react-toastify";
 
 const ValidationItem = ({ valid, text }) => (
   <p
@@ -116,7 +117,7 @@ const AuthPage = () => {
       // UPDATE REDUX AUTH STATE
       await dispatch(getCurrentUser());
 
-      alert(`${isLogin ? "Login" : "Register"} Successful`);
+      toast.success(`${isLogin ? "Login" : "Register"} Successful`);
 
       // RESET FORM
       setFormData({

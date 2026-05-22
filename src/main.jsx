@@ -6,6 +6,8 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routes/routes.jsx";
 import { Provider } from "react-redux";
 import store from "./app/store.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -13,6 +15,7 @@ createRoot(document.getElementById("root")).render(
       <RouterProvider router={router}>
         <App />
       </RouterProvider>
+      <ToastContainer position="top-right" autoClose={2000} theme="light" />
     </Provider>
   </StrictMode>,
 );
