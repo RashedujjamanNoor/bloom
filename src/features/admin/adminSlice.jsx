@@ -5,6 +5,7 @@ import {
   getProducts,
   createProduct,
   deleteProduct,
+  updateProduct as updateProductService,
 } from "../../services/adminService";
 
 const initialState = {
@@ -56,6 +57,21 @@ export const addProduct = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Failed to add product",
+      );
+    }
+  },
+);
+
+//Update Product
+export const updateProduct = createAsyncThunk(
+  "admin/updateProduct",
+
+  async ({ id, productData }, thunkAPI) => {
+    try {
+      return await updateProductService(id, productData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to update product",
       );
     }
   },
@@ -133,6 +149,17 @@ const adminSlice = createSlice({
       // ADD PRODUCT SUCCESS
       .addCase(addProduct.fulfilled, (state, action) => {
         state.products.unshift(action.payload.product);
+      })
+
+      //Edit
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.products = state.products.map((product) =>
+          product._id === action.payload.product._id
+            ? action.payload.product
+            : product,
+        );
       })
 
       // DELETE PRODUCT SUCCESS

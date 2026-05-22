@@ -5,6 +5,7 @@ import {
   fetchProducts,
   removeProduct,
   addProduct,
+  updateProduct,
 } from "../../features/admin/adminSlice";
 
 import { toast } from "react-toastify";
@@ -19,6 +20,10 @@ export const Products = () => {
   const { products, loading, error } = useSelector((state) => state.admin);
 
   const [showModal, setShowModal] = useState(false);
+
+  const [editId, setEditId] = useState(null);
+
+  const [previewImages, setPreviewImages] = useState([]);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -44,6 +49,30 @@ export const Products = () => {
       sizes: [],
       images: [],
     });
+    setPreviewImages([]);
+
+    setEditId(null);
+  };
+
+  const handleEdit = (product) => {
+    setEditId(product._id);
+
+    setFormData({
+      title: product.title,
+      brand: product.brand,
+      category: product.category,
+      price: product.price,
+      stock: product.stock,
+      colors: product.colors.join(", "),
+      description: product.description,
+      sizes: product.sizes || [],
+      images: [],
+    });
+
+    // EXISTING IMAGES PREVIEW
+    setPreviewImages(product.images || []);
+
+    setShowModal(true);
   };
 
   useEffect(() => {
@@ -77,10 +106,17 @@ export const Products = () => {
 
   // MULTIPLE IMAGE UPLOAD
   const handleImageChange = (e) => {
+    const files = [...e.target.files];
+
     setFormData({
       ...formData,
-      images: [...e.target.files],
+      images: files,
     });
+
+    // IMAGE PREVIEW
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+
+    setPreviewImages(previewUrls);
   };
 
   // ADD PRODUCT
@@ -112,9 +148,20 @@ export const Products = () => {
         productData.append("images", image);
       });
 
-      await dispatch(addProduct(productData)).unwrap();
+      if (editId) {
+        await dispatch(
+          updateProduct({
+            id: editId,
+            productData,
+          }),
+        ).unwrap();
 
-      toast.success("Product Added Successfully");
+        toast.success("Product Updated Successfully");
+      } else {
+        await dispatch(addProduct(productData)).unwrap();
+
+        toast.success("Product Added Successfully");
+      }
 
       setShowModal(false);
 
@@ -249,7 +296,10 @@ export const Products = () => {
 
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-center gap-3">
-                          <button className="rounded-xl bg-blue-100 px-4 py-2 text-sm font-medium text-blue-600">
+                          <button
+                            onClick={() => handleEdit(product)}
+                            className="rounded-xl bg-blue-100 px-4 py-2 text-sm font-medium text-blue-600"
+                          >
                             Edit
                           </button>
 
@@ -283,7 +333,9 @@ export const Products = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-2xl font-bold">Add New Product</h2>
+                <h2 className="text-2xl font-bold">
+                  {editId ? "Edit Product" : "Add New Product"}
+                </h2>
 
                 <button
                   onClick={() => {
@@ -395,6 +447,23 @@ export const Products = () => {
                     onChange={handleImageChange}
                     className="w-full rounded-2xl border border-gray-200 p-3"
                   />
+                  {/* IMAGE PREVIEW */}
+                  {previewImages.length > 0 && (
+                    <div className="md:col-span-2">
+                      <p className="mb-3 font-medium">Preview Images</p>
+
+                      <div className="flex flex-wrap gap-4">
+                        {previewImages.map((image, index) => (
+                          <img
+                            key={index}
+                            src={image}
+                            alt="preview"
+                            className="h-24 w-24 rounded-2xl object-cover border"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <textarea
@@ -410,7 +479,7 @@ export const Products = () => {
                   type="submit"
                   className="md:col-span-2 rounded-2xl bg-black px-5 py-3 font-semibold text-white"
                 >
-                  Add Product
+                  {editId ? "Update Product" : "Add Product"}
                 </button>
               </form>
             </div>

@@ -21,6 +21,17 @@ export const createProduct = async (productData) => {
   return res.data;
 };
 
+//EDIT
+export const updateProduct = async (id, productData) => {
+  const res = await API.put(`/products/${id}`, productData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
+};
+
 // DELETE PRODUCT
 export const deleteProduct = async (id) => {
   const res = await API.delete(`/products/${id}`);
