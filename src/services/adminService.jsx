@@ -21,7 +21,7 @@ export const createProduct = async (productData) => {
   return res.data;
 };
 
-//EDIT
+//EDIT Product
 export const updateProduct = async (id, productData) => {
   const res = await API.put(`/products/${id}`, productData, {
     headers: {
@@ -35,6 +35,29 @@ export const updateProduct = async (id, productData) => {
 // DELETE PRODUCT
 export const deleteProduct = async (id) => {
   const res = await API.delete(`/products/${id}`);
+
+  return res.data;
+};
+
+// GET ALL ORDERS
+export const getOrders = async () => {
+  const res = await API.get("orders/admin/all");
+
+  return res.data;
+};
+
+// UPDATE ORDER STATUS
+export const changeOrderStatus = async (id, status) => {
+  const res = await API.put(`/orders/admin/${id}`, {
+    status,
+  });
+
+  return res.data;
+};
+
+// CANCEL ORDER
+export const removeOrder = async (id) => {
+  const res = await API.put(`/orders/cancel//${id}`);
 
   return res.data;
 };

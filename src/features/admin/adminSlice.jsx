@@ -6,10 +6,15 @@ import {
   createProduct,
   deleteProduct,
   updateProduct as updateProductService,
+  getOrders,
+  changeOrderStatus,
+  removeOrder,
 } from "../../services/adminService";
 
 const initialState = {
   stats: null,
+
+  orders: [],
 
   products: [],
 
@@ -25,6 +30,53 @@ export const fetchDashboardStats = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       return await getDashboardStats();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
+      );
+    }
+  },
+);
+
+//Fetch All Orders
+export const fetchOrders = createAsyncThunk(
+  "admin/fetchOrders",
+
+  async (_, thunkAPI) => {
+    try {
+      return await getOrders();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
+      );
+    }
+  },
+);
+
+//Update Order State
+export const updateOrderStatus = createAsyncThunk(
+  "admin/updateOrderStatus",
+
+  async ({ id, status }, thunkAPI) => {
+    try {
+      return await changeOrderStatus(id, status);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
+      );
+    }
+  },
+);
+
+//Cancel Order
+export const deleteOrder = createAsyncThunk(
+  "admin/deleteOrder",
+
+  async (id, thunkAPI) => {
+    try {
+      await removeOrder(id);
+
+      return id;
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Something went wrong",
@@ -148,7 +200,9 @@ const adminSlice = createSlice({
 
       // ADD PRODUCT SUCCESS
       .addCase(addProduct.fulfilled, (state, action) => {
-        state.products.unshift(action.payload.product);
+        if (action.payload?.product) {
+          state.products.unshift(action.payload.product);
+        }
       })
 
       //Edit
@@ -167,6 +221,68 @@ const adminSlice = createSlice({
         state.products = state.products.filter(
           (product) => product._id !== action.payload,
         );
+      })
+
+      // FETCH ORDERS
+      .addCase(fetchOrders.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(fetchOrders.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.orders = action.payload.orders;
+      })
+
+      .addCase(fetchOrders.rejected, (state, action) => {
+        state.loading = false;
+
+        state.error = action.payload;
+      })
+
+      //Update Order
+
+      .addCase(updateOrderStatus.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.orders = state.orders.map((order) =>
+          order._id === action.payload.order._id ? action.payload.order : order,
+        );
+      })
+
+      .addCase(updateOrderStatus.rejected, (state, action) => {
+        state.loading = false;
+
+        state.error = action.payload;
+      })
+
+      // CANCEL ORDER
+      .addCase(deleteOrder.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(deleteOrder.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.orders = state.orders.map((order) =>
+          order._id === action.payload
+            ? {
+                ...order,
+                orderStatus: "Cancelled",
+              }
+            : order,
+        );
+      })
+
+      .addCase(deleteOrder.rejected, (state, action) => {
+        state.loading = false;
+
+        state.error = action.payload;
       });
   },
 });
