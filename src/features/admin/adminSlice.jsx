@@ -9,12 +9,17 @@ import {
   getOrders,
   changeOrderStatus,
   removeOrder,
+  getUsers,
+  changeUserRole,
+  removeUser,
 } from "../../services/adminService";
 
 const initialState = {
   stats: null,
 
   orders: [],
+
+  users: [],
 
   products: [],
 
@@ -33,6 +38,53 @@ export const fetchDashboardStats = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Something went wrong",
+      );
+    }
+  },
+);
+
+//Fetch All Users
+export const fetchUsers = createAsyncThunk(
+  "admin/fetchUsers",
+
+  async (_, thunkAPI) => {
+    try {
+      return await getUsers();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to fetch users",
+      );
+    }
+  },
+);
+
+//Update User Role
+export const updateUserRole = createAsyncThunk(
+  "admin/updateUserRole",
+
+  async ({ id, role }, thunkAPI) => {
+    try {
+      return await changeUserRole(id, role);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to update role",
+      );
+    }
+  },
+);
+
+//Delete User
+export const deleteUser = createAsyncThunk(
+  "admin/deleteUser",
+
+  async (id, thunkAPI) => {
+    try {
+      await removeUser(id);
+
+      return id;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to delete user",
       );
     }
   },
@@ -283,6 +335,35 @@ const adminSlice = createSlice({
         state.loading = false;
 
         state.error = action.payload;
+      })
+
+      // FETCH USERS
+      .addCase(fetchUsers.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.users = action.payload.users;
+      })
+
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+
+        state.error = action.payload;
+      })
+
+      // UPDATE USER ROLE
+      .addCase(updateUserRole.fulfilled, (state, action) => {
+        state.users = state.users.map((user) =>
+          user._id === action.payload.user._id ? action.payload.user : user,
+        );
+      })
+
+      // DELETE USER
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.users = state.users.filter((user) => user._id !== action.payload);
       });
   },
 });

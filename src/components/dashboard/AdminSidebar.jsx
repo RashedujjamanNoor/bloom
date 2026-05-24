@@ -37,6 +37,7 @@ const AdminSidebar = () => {
           <NavLink
             key={link.path}
             to={link.path}
+            end={link.path === "/dashboard"}
             className={({ isActive }) =>
               `p-3 rounded-lg font-medium transition-all
 

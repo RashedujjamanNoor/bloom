@@ -10,6 +10,7 @@ import {
 } from "../../features/admin/adminSlice";
 
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const categories = ["Hoodie", "T-Shirt", "Pants", "Shoes", "Accessories"];
 
@@ -184,7 +185,16 @@ export const Products = () => {
 
   // DELETE PRODUCT
   const handleDelete = async (id) => {
-    if (window.confirm("Delete this product?")) {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+    if (result.isConfirmed) {
       try {
         await dispatch(removeProduct(id)).unwrap();
 
@@ -309,7 +319,7 @@ export const Products = () => {
                         <div className="flex items-center justify-center gap-3">
                           <button
                             onClick={() => handleEdit(product)}
-                            className="rounded-xl bg-blue-100 px-4 py-2 text-sm font-medium text-blue-600"
+                            className="rounded-xl bg-blue-100 px-4 py-2 text-sm font-medium text-blue-600 cursor-pointer"
                           >
                             Edit
                           </button>

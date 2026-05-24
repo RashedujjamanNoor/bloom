@@ -61,3 +61,26 @@ export const removeOrder = async (id) => {
 
   return res.data;
 };
+
+// GET USERS
+export const getUsers = async () => {
+  const res = await API.get("/admin/users");
+
+  return res.data;
+};
+
+// UPDATE USER ROLE
+export const changeUserRole = async (id, role) => {
+  const res = await API.put(`/admin/users/${id}`, {
+    role,
+  });
+
+  return res.data;
+};
+
+// DELETE USER
+export const removeUser = async (id) => {
+  const res = await API.delete(`/admin/users/${id}`);
+
+  return res.data;
+};
