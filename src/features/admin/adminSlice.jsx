@@ -12,6 +12,7 @@ import {
   getUsers,
   changeUserRole,
   removeUser,
+  getAnalytics,
 } from "../../services/adminService";
 
 const initialState = {
@@ -20,6 +21,8 @@ const initialState = {
   orders: [],
 
   users: [],
+
+  analytics: null,
 
   products: [],
 
@@ -35,6 +38,21 @@ export const fetchDashboardStats = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       return await getDashboardStats();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
+      );
+    }
+  },
+);
+
+//Get Analytics
+export const fetchAnalytics = createAsyncThunk(
+  "admin/fetchAnalytics",
+
+  async (_, thunkAPI) => {
+    try {
+      return await getAnalytics();
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Something went wrong",
@@ -364,6 +382,23 @@ const adminSlice = createSlice({
       // DELETE USER
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.users = state.users.filter((user) => user._id !== action.payload);
+      })
+
+      // FETCH ANALYTICS
+      .addCase(fetchAnalytics.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(fetchAnalytics.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.analytics = action.payload.analytics;
+      })
+
+      .addCase(fetchAnalytics.rejected, (state, action) => {
+        state.loading = false;
+
+        state.error = action.payload;
       });
   },
 });

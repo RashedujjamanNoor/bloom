@@ -84,3 +84,10 @@ export const removeUser = async (id) => {
 
   return res.data;
 };
+
+//GET ANALYTCS
+export const getAnalytics = async () => {
+  const res = await API.get("/admin/analytics");
+
+  return res.data;
+};

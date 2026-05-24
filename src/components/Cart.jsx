@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 export const Cart = () => {
   const cartData = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  console.log(cartData);
 
   const handleDeleteOne = (item) => {
     dispatch(deleteOne(item));

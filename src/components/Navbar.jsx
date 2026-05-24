@@ -9,7 +9,7 @@ import { getCurrentUser, logout } from "../features/authSlice";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  console.log(isAuthenticated);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
