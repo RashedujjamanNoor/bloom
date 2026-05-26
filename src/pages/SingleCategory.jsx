@@ -11,7 +11,7 @@ import { fetchProducts } from "../features/product/productSlice";
 export const SingleCategory = () => {
   const dispatch = useDispatch();
 
-  const { categoryName } = useParams();
+  const { gender } = useParams();
 
   const { products, loading, error } = useSelector((state) => state.product);
 
@@ -29,9 +29,9 @@ export const SingleCategory = () => {
   // CATEGORY PRODUCTS
   let filteredProducts = products.filter(
     (product) =>
-      product.category &&
-      categoryName &&
-      product.category.toLowerCase() === categoryName.toLowerCase(),
+      product.gender &&
+      gender &&
+      product.gender.toLowerCase() === gender.toLowerCase(),
   );
 
   // PRICE FILTER
@@ -76,7 +76,7 @@ export const SingleCategory = () => {
     <div className="min-h-screen bg-gray-100 px-4 py-6">
       {/* HEADER */}
       <div className="mb-6 rounded-3xl bg-white p-6 shadow-sm">
-        <h2 className="text-3xl font-bold capitalize">{categoryName}</h2>
+        <h2 className="text-3xl font-bold capitalize">{gender}</h2>
 
         <p className="mt-2 text-gray-500">
           Total Products: {filteredProducts.length}
