@@ -24,7 +24,10 @@ const cartSlice = createSlice({
     add(state, action) {
       const newItem = action.payload;
       const existingItem = state.cartItem.find(
-        (item) => item.id === newItem.id,
+        (item) =>
+          item._id === newItem._id &&
+          item.selectedSize === newItem.selectedSize &&
+          item.selectedColor === newItem.selectedColor,
       );
 
       state.totalQuantity++;
@@ -54,15 +57,27 @@ const cartSlice = createSlice({
     },
 
     deleteOne(state, action) {
-      const id = action.payload.id;
+      const { _id, selectedSize, selectedColor } = action.payload;
 
-      const existingId = state.cartItem.find((item) => item.id === id);
+      const existingId = state.cartItem.find(
+        (item) =>
+          item._id === _id &&
+          item.selectedSize === selectedSize &&
+          item.selectedColor === selectedColor,
+      );
 
       if (existingId.quantity == 1) {
         state.totalQuantity--;
         state.totalAmount = state.totalAmount - existingId.price;
         state.totalItem--;
-        state.cartItem = state.cartItem.filter((item) => item.id !== id);
+        state.cartItem = state.cartItem.filter(
+          (item) =>
+            !(
+              item._id === _id &&
+              item.selectedSize === selectedSize &&
+              item.selectedColor === selectedColor
+            ),
+        );
       } else {
         state.totalQuantity--;
         existingId.quantity--;
@@ -81,14 +96,24 @@ const cartSlice = createSlice({
 
     remove(state, action) {
       const newItem = action.payload;
-      const existingId = state.cartItem.find((item) => item.id === newItem.id);
+      const existingId = state.cartItem.find(
+        (item) =>
+          item._id === newItem._id &&
+          item.selectedSize === newItem.selectedSize &&
+          item.selectedColor === newItem.selectedColor,
+      );
 
       state.totalQuantity = state.totalQuantity - newItem.quantity;
       state.totalItem--;
 
       if (existingId) {
         state.cartItem = state.cartItem.filter(
-          (item) => item.id !== newItem.id,
+          (item) =>
+            !(
+              item._id === newItem._id &&
+              item.selectedSize === newItem.selectedSize &&
+              item.selectedColor === newItem.selectedColor
+            ),
         );
       } else {
         console.log("not exist");

@@ -1,22 +1,92 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import "swiper/css/pagination";
-import womentData from "../assets/womenCloth";
+
+import { useDispatch, useSelector } from "react-redux";
+
 import { ProductCard } from "./ProductCard";
-import menData from "../assets/menCloth";
-import kidsData from "../assets/kidsCloth";
+
+import { fetchProducts } from "../features/admin/adminSlice";
 
 export const NowTranding = () => {
+  const dispatch = useDispatch();
+
+  const { products, loading } = useSelector((state) => state.admin);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  // FILTER PRODUCTS
+  const womenProducts = products.filter(
+    (item) => item.gender?.toLowerCase() === "women",
+  );
+
+  const menProducts = products.filter(
+    (item) => item.gender?.toLowerCase() === "men",
+  );
+
+  const kidProducts = products.filter(
+    (item) => item.gender?.toLowerCase() === "kid",
+  );
+
+  const renderSlider = (data) => {
+    if (loading) {
+      return <p>Loading...</p>;
+    }
+
+    if (data.length === 0) {
+      return <p>No Products Found</p>;
+    }
+
+    return (
+      <Swiper
+        slidesPerView={4.2}
+        spaceBetween={30}
+        className="mySwiper"
+        breakpoints={{
+          320: {
+            slidesPerView: 1.2,
+          },
+          480: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: 4,
+          },
+          1280: {
+            slidesPerView: 4.2,
+          },
+        }}
+      >
+        {data.map((item) => (
+          <SwiperSlide key={item._id}>
+            <ProductCard
+              item={item}
+              title={item.title}
+              price={item.price}
+              image={item.images?.[0]}
+              hoverImage={item.images?.[1]}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    );
+  };
+
   return (
     <div className="mt-4">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-2 md:relative top-11">
+      {/* HEADER */}
+      <div className="relative mb-2 flex items-center justify-between md:top-11">
         <h2 className="text-2xl font-semibold">Trending Now</h2>
       </div>
 
-      {/* Tabs (RIGHT) */}
+      {/* TABS */}
       <div className="tabs tabs-border md:justify-end">
+        {/* WOMEN */}
         <input
           type="radio"
           name="my_tabs_2"
@@ -24,128 +94,18 @@ export const NowTranding = () => {
           aria-label="Women"
           defaultChecked
         />
-        <div className="tab-content  pt-10">
-          <Swiper
-            slidesPerView={4.2}
-            spaceBetween={30}
-            pagination={{
-              clickable: true,
-            }}
-            modules={[]}
-            className="mySwiper"
-            breakpoints={{
-              320: {
-                slidesPerView: 1.2,
-              },
-              480: {
-                slidesPerView: 2,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              1024: {
-                slidesPerView: 4,
-              },
-              1280: {
-                slidesPerView: 4.2,
-              },
-            }}
-          >
-            {womentData.map((item, index) => (
-              <SwiperSlide key={index}>
-                <ProductCard
-                  title={item.title}
-                  price={item.price}
-                  image={item.img}
-                  hoverImage={item.img2}
-                  item={item}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
 
+        <div className="tab-content pt-10">{renderSlider(womenProducts)}</div>
+
+        {/* MEN */}
         <input type="radio" name="my_tabs_2" className="tab" aria-label="Men" />
-        <div className="tab-content  pt-10">
-          <Swiper
-            slidesPerView={4.2}
-            spaceBetween={30}
-            pagination={{
-              clickable: true,
-            }}
-            modules={[]}
-            className="mySwiper"
-            breakpoints={{
-              320: {
-                slidesPerView: 1.2,
-              },
-              480: {
-                slidesPerView: 2,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              1024: {
-                slidesPerView: 4,
-              },
-              1280: {
-                slidesPerView: 4.2,
-              },
-            }}
-          >
-            {menData.map((item, index) => (
-              <SwiperSlide key={index}>
-                <ProductCard
-                  title={item.title}
-                  price={item.price}
-                  image={item.img}
-                  hoverImage={item.img2}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
 
+        <div className="tab-content pt-10">{renderSlider(menProducts)}</div>
+
+        {/* KID */}
         <input type="radio" name="my_tabs_2" className="tab" aria-label="Kid" />
-        <div className="tab-content  pt-10">
-          <Swiper
-            slidesPerView={4.2}
-            spaceBetween={30}
-            pagination={{
-              clickable: true,
-            }}
-            modules={[]}
-            className="mySwiper"
-            breakpoints={{
-              320: {
-                slidesPerView: 1.2,
-              },
-              480: {
-                slidesPerView: 2,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              1024: {
-                slidesPerView: 4,
-              },
-              1280: {
-                slidesPerView: 4.2,
-              },
-            }}
-          >
-            {kidsData.map((item, index) => (
-              <SwiperSlide key={index}>
-                <ProductCard
-                  title={item.title}
-                  price={item.price}
-                  image={item.img}
-                  hoverImage={item.img2}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+
+        <div className="tab-content pt-10">{renderSlider(kidProducts)}</div>
       </div>
     </div>
   );

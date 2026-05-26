@@ -1,17 +1,37 @@
 import React from "react";
 import { LuShoppingCart } from "react-icons/lu";
-import { useDispatch } from "react-redux";
-import { add } from "../features/cartSlice";
+// import { useDispatch } from "react-redux";
+// import { add } from "../features/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 export const ProductCard = ({ image, hoverImage, title, price, item }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleAddcart = (item) => {
-    dispatch(add(item));
+  // const handleAddcart = (item) => {
+  //   dispatch(
+  //     add({
+  //       ...item,
+  //       selectedSize: item.sizes?.[0] || "",
+  //       selectedColor: item.colors?.[0] || "",
+  //     }),
+  //   );
+  // };
+
+  const handleClick = () => {
+    navigate(`/product/${item._id}`);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
-    <div className=" rounded-xl shadow-sm hover:shadow-md transition duration-300">
+    <div
+      onClick={handleClick}
+      className=" rounded-xl shadow-sm hover:shadow-md transition duration-300"
+    >
       {/* Image Wrapper */}
       <div className="relative w-full h-96 overflow-hidden rounded-lg group">
         {/* Main Image */}

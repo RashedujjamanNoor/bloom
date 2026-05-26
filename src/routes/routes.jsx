@@ -11,6 +11,7 @@ import { Products } from "../pages/admin/Products";
 import { Orders } from "../pages/admin/Orders";
 import { Users } from "../pages/admin/Users";
 import { Analytics } from "../pages/admin/Analytics";
+import { SingleProduct } from "../pages/SingleProduct";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/category/:categoryName",
         element: <SingleCategory />,
+      },
+      {
+        path: "/product/:id",
+        element: <SingleProduct />,
       },
 
       {
