@@ -42,7 +42,12 @@ export const ProductCard = ({ image, hoverImage, title, price, item }) => {
 
       {/* Title + Price */}
       <div className="mt-1 text-left mx-2 pb-1">
-        <h3 className="text-sm font-medium">{title.slice(0, 20)}...</h3>
+        {title.length > 20 ? (
+          <h3 className="text-sm font-medium">{title.slice(0, 20)}...</h3>
+        ) : (
+          <h3 className="text-sm font-medium">{title}</h3>
+        )}
+
         <p className="text-xs">৳{price}</p>
       </div>
     </div>

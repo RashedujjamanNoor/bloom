@@ -22,9 +22,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/category/:gender",
+        path: "/category/:categoryName",
         element: <SingleCategory />,
       },
+
       {
         path: "/checkout",
         element: <Checkout />,
