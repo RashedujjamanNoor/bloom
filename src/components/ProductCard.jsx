@@ -4,7 +4,7 @@ import { LuShoppingCart } from "react-icons/lu";
 // import { add } from "../features/cartSlice";
 import { useNavigate } from "react-router-dom";
 
-export const ProductCard = ({ image, hoverImage, title, price, item }) => {
+export const ProductCard = ({ image, hoverImage, title, price, item, id }) => {
   // const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ export const ProductCard = ({ image, hoverImage, title, price, item }) => {
   // };
 
   const handleClick = () => {
-    navigate(`/product/${item._id}`);
+    navigate(`/product/${id}`);
 
     window.scrollTo({
       top: 0,

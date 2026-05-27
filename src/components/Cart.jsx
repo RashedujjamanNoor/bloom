@@ -51,9 +51,14 @@ export const Cart = () => {
                 className="flex justify-between items-center gap-2 w-full p-2"
               >
                 <div className="flex items-center gap-2 w-full order-2">
-                  <div className="text-left w-full">
-                    <p>{item.title}</p>
-                    <p className="text-xs">Price: {item.price}</p>
+                  <div className="w-full text-left">
+                    <p className="font-medium">{item.title}</p>
+
+                    <p className="text-xs">Price: ৳{item.price}</p>
+
+                    <p className="text-xs">Size: {item.selectedSize}</p>
+
+                    <p className="text-xs">Color: {item.selectedColor}</p>
                   </div>
                   <div className="mt-2">
                     <MdDeleteForever
@@ -64,9 +69,9 @@ export const Cart = () => {
                 </div>
                 <div className="flex flex-col justify-center items-center">
                   <img
-                    src={item.img}
-                    alt="Cloth Image"
-                    className="w-16 h-16 object-top object-cover rounded-xl"
+                    src={item.images?.[0]}
+                    alt={item.title}
+                    className="h-16 w-16 rounded-xl object-cover object-top"
                   />
                   <div className="bg-gray-700 flex justify-center items-center gap-4 text-[#8cc63f] px-2 rounded-full mt-2">
                     <button

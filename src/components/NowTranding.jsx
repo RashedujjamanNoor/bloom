@@ -65,6 +65,7 @@ export const NowTranding = () => {
         {data.map((item) => (
           <SwiperSlide key={item._id}>
             <ProductCard
+              id={item._id}
               item={item}
               title={item.title}
               price={item.price}

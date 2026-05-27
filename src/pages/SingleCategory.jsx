@@ -153,6 +153,7 @@ export const SingleCategory = () => {
                 <div key={product._id}>
                   <ProductCard
                     id={product._id}
+                    item={product}
                     title={product.title}
                     price={product.price}
                     image={product.images?.[0]}

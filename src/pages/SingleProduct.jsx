@@ -248,6 +248,7 @@ export const SingleProduct = () => {
               {relatedProducts.map((item) => (
                 <ProductCard
                   key={item._id}
+                  id={item._id}
                   item={item}
                   title={item.title}
                   price={item.price}
