@@ -23,11 +23,7 @@ export const createProduct = async (productData) => {
 
 //EDIT Product
 export const updateProduct = async (id, productData) => {
-  const res = await API.put(`/products/${id}`, productData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const res = await API.put(`/products/${id}`, productData);
 
   return res.data;
 };

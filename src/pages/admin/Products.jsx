@@ -327,7 +327,9 @@ export const Products = () => {
               Product Management
             </h1>
 
-            <p className="mt-2 text-gray-500">Manage your store products</p>
+            <p className="mt-2 text-gray-500">
+              Manage your store products({products.length})
+            </p>
           </div>
 
           <button
