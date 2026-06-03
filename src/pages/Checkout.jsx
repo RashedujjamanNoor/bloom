@@ -48,7 +48,7 @@ export const Checkout = () => {
               </div>
               <div className="flex flex-col justify-center items-center">
                 <img
-                  src={item.img}
+                  src={item.images[0]}
                   alt="Cloth Image"
                   className="w-16 h-16 object-top object-cover rounded-xl"
                 />
