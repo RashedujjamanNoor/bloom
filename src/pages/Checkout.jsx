@@ -1,6 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { add, deleteOne, remove } from "../features/cartSlice";
+import { add, clearCart, deleteOne, remove } from "../features/cartSlice";
 import { MdDeleteForever } from "react-icons/md";
+import { createNewOrder } from "../features/order/orderSlice";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 export const Checkout = () => {
   const cartData = useSelector((state) => state.cart);
@@ -18,6 +21,74 @@ export const Checkout = () => {
 
   const handleRemove = (item) => {
     dispatch(remove(item));
+  };
+
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    paymentMethod: "Cash on Delivery",
+  });
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      phone: "",
+      address: "",
+      paymentMethod: "Cash on Delivery",
+    });
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
+
+    if (!formData.name || !formData.phone || !formData.address) {
+      return toast.error("Please fill all fields");
+    }
+
+    if (cartData.cartItem.length === 0) {
+      return toast.error("Cart is empty");
+    }
+
+    try {
+      const orderData = {
+        orderItems: cartData.cartItem.map((item) => ({
+          product: item._id,
+          name: item.title,
+          image: item.images?.[0],
+          price: item.price,
+          quantity: item.quantity,
+          size: item.selectedSize,
+          color: item.selectedColor,
+        })),
+
+        shippingAddress: {
+          name: formData.name,
+          phone: formData.phone,
+          address: formData.address,
+        },
+
+        paymentMethod: formData.paymentMethod,
+
+        totalPrice: cartData.totalAmount,
+      };
+
+      await dispatch(createNewOrder(orderData)).unwrap();
+
+      toast.success("Order placed successfully");
+
+      dispatch(clearCart());
+      resetForm();
+    } catch (error) {
+      toast.error(error);
+    }
   };
 
   return (
@@ -81,9 +152,12 @@ export const Checkout = () => {
         <fieldset className="fieldset border-base-300 rounded-box  w-full   border p-4 ">
           <legend className="fieldset-legend">Delivery details</legend>
 
-          <form className="flex flex-col">
+          <form onSubmit={handlePlaceOrder} className="flex flex-col">
             <label className="label">Name</label>
             <input
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
               type="text"
               className="input text-xs font-extralight w-full bg-transparent outline-none  focus:border-primary"
               placeholder="Enter Your Name"
@@ -91,6 +165,9 @@ export const Checkout = () => {
 
             <label className="label mt-4">Phone</label>
             <input
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
               type="number"
               className="input text-xs font-extralight w-full outline-none  focus:border-primary"
               placeholder="Enter Your Number "
@@ -99,6 +176,9 @@ export const Checkout = () => {
             <label className="label mt-4">Full Address</label>
             <input
               type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
               className="input text-xs font-extralight w-full outline-none  focus:border-primary"
               placeholder="Enter Your Address"
             />
@@ -111,13 +191,22 @@ export const Checkout = () => {
                     type="radio"
                     id="cashOnDelivery"
                     value="Cash on Delivery"
-                    name="payment"
+                    name="paymentMethod"
+                    checked={formData.paymentMethod === "Cash on Delivery"}
+                    onChange={handleChange}
                   />
                   <label htmlFor="cashOnDelivery">Cash on Delivery</label>
                 </div>
                 <br />
                 <div className="flex justify-center items-center gap-3">
-                  <input type="radio" id="pay" value="Pay" name="payment" />
+                  <input
+                    type="radio"
+                    id="pay"
+                    value="Pay"
+                    name="paymentMethod"
+                    checked={formData.paymentMethod === "Pay"}
+                    onChange={handleChange}
+                  />
                   <label htmlFor="pay">Pay</label>
                 </div>
               </div>

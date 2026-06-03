@@ -132,9 +132,22 @@ const cartSlice = createSlice({
       localStorage.setItem("totalAmount", JSON.stringify(state.totalAmount));
       localStorage.setItem("totalItem", JSON.stringify(state.totalItem));
     },
+
+    //ClearCart
+    clearCart(state) {
+      state.cartItem = [];
+      state.totalItem = 0;
+      state.totalAmount = 0;
+      state.totalQuantity = 0;
+
+      localStorage.removeItem("cartItem");
+      localStorage.removeItem("totalItem");
+      localStorage.removeItem("totalAmount");
+      localStorage.removeItem("totalQuantity");
+    },
   },
 });
 
-export const { add, deleteOne, remove } = cartSlice.actions;
+export const { add, deleteOne, remove, clearCart } = cartSlice.actions;
 
 export default cartSlice;

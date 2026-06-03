@@ -12,6 +12,7 @@ import { Orders } from "../pages/admin/Orders";
 import { Users } from "../pages/admin/Users";
 import { Analytics } from "../pages/admin/Analytics";
 import { SingleProduct } from "../pages/SingleProduct";
+import MyOrders from "../pages/MyOrders";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/auth",
         element: <AuthPage />,
+      },
+      {
+        path: "/my-orders",
+        element: <MyOrders />,
       },
     ],
   },
