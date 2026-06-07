@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import logo from "/logo.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Cart } from "./Cart";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUser, logout } from "../features/authSlice";
+import { CiUser } from "react-icons/ci";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -46,19 +47,16 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-999 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a>New Arival</a>
+                <Link to="/category/men">Men</Link>
               </li>
               <li>
-                <a>Men</a>
+                <Link to="/category/women">Women</Link>
               </li>
               <li>
-                <a>Women</a>
-              </li>
-              <li>
-                <a>Kid</a>
+                <Link to="/category/kid">Kid</Link>
               </li>
             </ul>
           </div>
@@ -67,18 +65,48 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
+          <ul className="flex gap-3  menu-horizontal px-1">
             <li>
-              <a>New Arival</a>
+              <NavLink
+                className={({ isActive }) =>
+                  `relative inline-block after:absolute after:left-0 after:bottom-0
+     after:h-[2px] after:w-0 after:bg-primary
+     after:transition-all after:duration-300
+     hover:after:w-full
+     ${isActive ? "after:w-full" : ""}`
+                }
+                to="/category/men"
+              >
+                Men
+              </NavLink>
             </li>
             <li>
-              <Link to="/men">Men</Link>
+              <NavLink
+                className={({ isActive }) =>
+                  `relative inline-block after:absolute after:left-0 after:bottom-0
+     after:h-[2px] after:w-0 after:bg-primary
+     after:transition-all after:duration-300
+     hover:after:w-full
+     ${isActive ? "after:w-full" : ""}`
+                }
+                to="/category/women"
+              >
+                Women
+              </NavLink>
             </li>
             <li>
-              <a>Women</a>
-            </li>
-            <li>
-              <a>Kid</a>
+              <NavLink
+                className={({ isActive }) =>
+                  `relative inline-block after:absolute after:left-0 after:bottom-0
+     after:h-[2px] after:w-0 after:bg-primary
+     after:transition-all after:duration-300
+     hover:after:w-full
+     ${isActive ? "after:w-full" : ""}`
+                }
+                to="/category/kid"
+              >
+                Kid
+              </NavLink>
             </li>
           </ul>
         </div>
@@ -92,11 +120,8 @@ const Navbar = () => {
               role="button"
               className="btn btn-ghost btn-circle avatar"
             >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+              <div className="w-10 rounded-full flex justify-center items-center bg-primary/10">
+                <CiUser className="text-2xl" />
               </div>
             </div>
             <ul
