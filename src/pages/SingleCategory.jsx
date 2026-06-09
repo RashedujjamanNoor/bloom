@@ -193,6 +193,7 @@ export const SingleCategory = () => {
               {filteredProducts.map((product) => (
                 <ProductCard
                   key={product._id}
+                  id={product._id}
                   item={product}
                   title={product.title}
                   price={product.price}

@@ -50,10 +50,7 @@ export const ProductCard = ({ image, hoverImage, title, price, item, id }) => {
       </div>
 
       {/* Add to Cart Button */}
-      <div
-        onClick={() => handleAddcart(item)}
-        className="flex justify-end mt-2 mr-2"
-      >
+      <div className="flex justify-end mt-2 mr-2">
         <button className="bg-black text-white text-xs px-3 py-1 rounded-md hover:bg-gray-800 flex items-center justify-center gap-1 cursor-pointer">
           <LuShoppingCart className="text-md " />
           Add to Cart

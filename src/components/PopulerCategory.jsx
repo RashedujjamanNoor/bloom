@@ -71,7 +71,7 @@ export const PopulerCategory = () => {
             return (
               <SwiperSlide key={index}>
                 <CategoryCard
-                  title={category}
+                  category={category}
                   image={categoryProduct?.images?.[0]}
                 />
               </SwiperSlide>
