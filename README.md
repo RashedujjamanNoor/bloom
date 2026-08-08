@@ -121,31 +121,4 @@ Bloom includes a role-based admin dashboard for managing the store.
 | bcrypt | Password security |
 | dotenv | Environment variables |
 
----
 
-# 🏗️ Project Architecture
-
-Bloom follows a separated frontend/backend architecture.
-
-```text
-Bloom
-│
-├── frontend
-│   ├── components
-│   ├── pages
-│   ├── layouts
-│   ├── features
-│   ├── services
-│   ├── routes
-│   ├── firebase
-│   └── api
-│
-└── backend
-    ├── controllers
-    ├── models
-    ├── routes
-    ├── middleware
-    ├── services
-    ├── config
-    ├── utils
-    └── server.js
