@@ -14,31 +14,6 @@ https://bloom-seven-alpha.vercel.app/
 🔗 **GitHub Repository:**  
 https://github.com/RashedujjamanNoor/bloom
 
----
-
-## 📸 Screenshots
-
-> Add your project screenshots here.
-
-### 🏠 Homepage
-
-![Bloom Homepage](./screenshots/homepage.png)
-
-### 🛍️ Admin Product Page
-
-![Product Page](./screenshots/admin-product.png)
-
-### 🛒 Admin Order
-
-![Shopping Cart](./screenshots/admin-order.png)
-
-### 📦 My Orders
-
-![My Orders](./screenshots/user-order.png)
-
-### 👨‍💼 Admin Analitics
-
-![Admin Dashboard](./screenshots/admin-analitics.png)
 
 ---
 
